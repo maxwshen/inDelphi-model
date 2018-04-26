@@ -227,7 +227,7 @@ def get_frameshift_fqs(pred_all_df):
     crit = (pred_all_df['Category'] == 'del') & (pred_all_df['Length'] == del_len)
     fq = sum(pred_all_df[crit]['Predicted_Frequency'])
     fs = (-1 * del_len) % 3
-    fsd[fs] += fq
+    fsd['+%s' % (fs)] += fq
 
   return fsd
 
