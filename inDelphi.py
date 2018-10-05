@@ -196,6 +196,7 @@ def __predict_ins(seq, cutsite, pred_del_df, total_phi_score):
   dlpred = np.array(dlpred) / sum(dlpred)
   norm_entropy = entropy(dlpred) / np.log(len(dlpred))
   precision = 1 - norm_entropy
+  log_phi_score = np.log(total_phi_score)
 
   fiveohmapper = {'A': [1, 0, 0, 0], 
                   'C': [0, 1, 0, 0], 
@@ -207,7 +208,7 @@ def __predict_ins(seq, cutsite, pred_del_df, total_phi_score):
                    'T': [0, 0, 0, 1]}
   fivebase = seq[cutsite - 1]
   threebase = seq[cutsite]
-  onebp_features = fiveohmapper[fivebase] + threeohmapper[threebase] + [precision] + [total_phi_score]
+  onebp_features = fiveohmapper[fivebase] + threeohmapper[threebase] + [precision] + [log_phi_score]
   for idx in range(len(onebp_features)):
     val = onebp_features[idx]
     onebp_features[idx] = (val - normalizer[idx][0]) / normalizer[idx][1]
@@ -234,17 +235,53 @@ def __predict_ins(seq, cutsite, pred_del_df, total_phi_score):
   return pred_df
 
 def __build_stats(seq, cutsite, pred_df, total_phi_score):
+  # Precision stats
   overall_precision = 1 - entropy(pred_df['Predicted frequency']) / np.log(len(pred_df))
   highest_fq = max(pred_df['Predicted frequency'])
+  highest_del_fq = max(pred_df[pred_df['Category'] == 'del']['Predicted frequency'])
+  highest_ins_fq = max(pred_df[pred_df['Category'] == 'ins']['Predicted frequency'])
+  
+
+  # Outcomes
   ins_fq = sum(pred_df[pred_df['Category'] == 'ins']['Predicted frequency'])
+  crit = (pred_df['Category'] == 'del') & (pred_df['Genotype position'] != 'e')
+  mhdel_fq = sum(pred_df[crit]['Predicted frequency'])
+
+  crit = (pred_df['Category'] == 'del') & (pred_df['Genotype position'] == 'e')
+  nomhdel_fq = sum(pred_df[crit]['Predicted frequency'])
+
+  # Expected indel length
+  ddf = pred_df[pred_df['Category'] == 'del']
+  expected_indel_len = sum(ddf['Predicted frequency'] * ddf['Length'] / 100)
+  idf = pred_df[pred_df['Category'] == 'ins']
+  expected_indel_len += sum(idf['Predicted frequency'] * idf['Length'] / 100)
+
+  # Frameshifts
+  fsd = {'+0': 0, '+1': 0, '+2': 0}
+
+  crit = (pred_df['Category'] == 'ins')
+  ins1_fq = sum(pred_df[crit]['Predicted frequency'])
+  fsd['+1'] += ins1_fq
+
+  for del_len in set(pred_df['Length']):
+    crit = (pred_df['Category'] == 'del') & (pred_df['Length'] == del_len)
+    fq = sum(pred_df[crit]['Predicted frequency'])
+    fs = (-1 * del_len) % 3
+    fsd['+%s' % (fs)] += fq
+
   stats = {'Phi': total_phi_score,
-           'Phi percentile': None,
-           'Precision:': overall_precision,
-           'Precision percentile': None,
+           'Precision': overall_precision,
            '1-bp ins frequency': ins_fq,
-           '1-bp ins frequency percentile': None,
+           'MH del frequency': mhdel_fq,
+           'MHless del frequency': nomhdel_fq,
+           'Frameshift frequency': fsd['+1'] + fsd['+2'],
+           'Frame +0 frequency': fsd['+0'], 
+           'Frame +1 frequency': fsd['+1'], 
+           'Frame +2 frequency': fsd['+2'], 
            'Highest outcome frequency': highest_fq,
-           'Highest outcome frequency percentile': None,
+           'Highest del frequency': highest_del_fq,
+           'Highest ins frequency': highest_ins_fq,
+           'Expected indel length': expected_indel_len,
            'Reference sequence': seq,
            'Cutsite': cutsite,
            'gRNA': None,
@@ -258,6 +295,12 @@ def __build_stats(seq, cutsite, pred_df, total_phi_score):
 ##
 def predict(seq, cutsite):
   # Predict 1 bp insertions and all deletions (MH and MH-less)
+  #
+  # If no errors, returns a tuple (pred_df, stats)
+  # where pred_df is a dataframe and stats is a dict
+  #  
+  # If errors, returns a string
+  #
   if init_flag == False:
     init_model()
 
@@ -273,6 +316,7 @@ def predict(seq, cutsite):
   pred_del_df, total_phi_score = __predict_dels(seq, cutsite)
   pred_df = __predict_ins(seq, cutsite, 
                               pred_del_df, total_phi_score)
+  pred_df['Predicted frequency'] *= 100
 
   # Build stats
   stats = __build_stats(seq, cutsite, pred_df, total_phi_score)
@@ -300,11 +344,11 @@ def get_frameshift_fqs(pred_df):
     fsd['+%s' % (fs)] += fq
 
   d = defaultdict(list)
-  d['Frame'] = fsd.keys()
-  d['Predicted frequency'] = fsd.values()
+  d['Frame'] = list(fsd.keys())
+  d['Predicted frequency'] = list(fsd.values())
   df = pd.DataFrame(d)
   df = df.sort_values(by = 'Frame')
-  df.reset_index(drop = True)
+  df = df.reset_index(drop = True)
   return df
 
 def get_indel_length_fqs(pred_df):
@@ -315,13 +359,13 @@ def get_indel_length_fqs(pred_df):
 
   crit = (pred_df['Category'] == 'ins')
   ins1_fq = sum(pred_df[crit]['Predicted frequency'])
-  d['Indel Length'].append('+1')
+  d['Indel length'].append('+1')
   d['Predicted frequency'].append(ins1_fq)
 
   for del_len in set(pred_df['Length']):
     crit = (pred_df['Category'] == 'del') & (pred_df['Length'] == del_len)
     fq = sum(pred_df[crit]['Predicted frequency'])
-    d['Indel Length'].append('-%s' % (del_len))
+    d['Indel length'].append('-%s' % (del_len))
     d['Predicted frequency'].append(fq)
 
   df = pd.DataFrame(d)
@@ -339,13 +383,21 @@ def get_highest_frequency_length(pred_df):
   row = idd[idd['Predicted frequency'] == highest_fq]
   return row.iloc[0]
 
+def get_precision(pred_df):
+  # Returns a row of pred_df
+  return 1 - entropy(pred_df['Predicted frequency']) / np.log(len(pred_df))
+
 ##
 # Data reformatting
 ##
 def add_genotype_column(pred_df, stats):
   gts = []
-  seq = stats['Reference sequence']
-  cutsite = stats['Cutsite']
+  if type(stats) == dict:
+    seq = stats['Reference sequence']
+    cutsite = stats['Cutsite']
+  else:
+    seq = stats['Reference sequence'].iloc[0]
+    cutsite = stats['Cutsite'].iloc[0]
 
   for idx, row in pred_df.iterrows():
     gt_pos = row['Genotype position']
@@ -353,6 +405,7 @@ def add_genotype_column(pred_df, stats):
       gt = np.nan
     elif row['Category'] == 'del':
       dl = row['Length']
+      gt_pos = int(gt_pos)
       gt = seq[:cutsite - dl + gt_pos] + seq[cutsite + gt_pos:]
     else:
       ins_base = row['Inserted Bases']
@@ -361,33 +414,68 @@ def add_genotype_column(pred_df, stats):
   pred_df['Genotype'] = gts
   return
 
+def add_name_column(pred_df, stats):
+  names = []
+  seq = stats['Reference sequence'].iloc[0]
+  cutsite = stats['Cutsite'].iloc[0]
+
+  for idx, row in pred_df.iterrows():
+    gt_pos = row['Genotype position']
+    if gt_pos == 'e':
+      name = 'del%s' % (row['Length'])
+    elif row['Category'] == 'del':
+      dl = row['Length']
+      gt_pos = int(gt_pos)
+      name = 'del%s' % (seq[cutsite - dl + gt_pos : cutsite + gt_pos])
+    else:
+      ins_base = row['Inserted Bases']
+      name = 'ins%s' % (ins_base)
+    names.append(name)
+  pred_df['Name'] = names
+  return
+
 
 
 ##
 # Init
 ##
-def init_model(run_iter = 'abf', param_iter = 'aag'):
+def init_model(run_iter = 'aax', 
+               param_iter = 'aag', 
+               celltype = 'mESC'):
   global init_flag
   if init_flag != False:
     return
 
-  print('Initializing model %s/%s...' % (run_iter, param_iter))
+  print('Initializing model %s/%s, %s...' % (run_iter, param_iter, celltype))
+
+  model_dir = os.path.dirname(os.path.realpath(__file__))
+  model_dir += '/model'
+
+  import sys
+  def version_sensitive_pickle_load(f):
+    if sys.version_info[0] < 3:
+      return pickle.load(f)
+    else:
+      return pickle.load(f, encoding = 'latin1')
+
 
   global nn_params
   global nn2_params
-  nn_params = pickle.load(open('%s_%s_nn.pkl' % (run_iter, 
-                                              param_iter,
-                                              )))
-  nn2_params = pickle.load(open('%s_%s_nn2.pkl' % (run_iter, 
-                                              param_iter,
-                                              )))
+  with open('%s/%s_%s_nn.pkl' % (model_dir, run_iter, param_iter), 'rb') as f:
+    # load in python3.6 a pickle that was dumped from python2.7
+    nn_params = version_sensitive_pickle_load(f)
+  with open('%s/%s_%s_nn2.pkl' % (model_dir, run_iter, param_iter), 'rb') as f:
+    nn2_params = version_sensitive_pickle_load(f)
 
   global normalizer
   global rate_model
   global bp_model
-  bp_model = pickle.load(open('bp_model_%s.pkl' % ('v3')))
-  rate_model = pickle.load(open('rate_model_%s.pkl' % ('v3')))
-  normalizer = pickle.load(open('normalizer_%s.pkl' % ('v3')))
+  with open('%s/bp_model_%s.pkl' % (model_dir, celltype), 'rb') as f:
+    bp_model = version_sensitive_pickle_load(f)
+  with open('%s/rate_model_%s.pkl' % (model_dir, celltype), 'rb') as f:
+    rate_model = version_sensitive_pickle_load(f)
+  with open('%s/Normalizer_%s.pkl' % (model_dir, celltype), 'rb') as f:
+    normalizer = version_sensitive_pickle_load(f)
 
   init_flag = True
 
