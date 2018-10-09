@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 import pandas as pd
 from collections import defaultdict
-import pickle, copy
+import os, pickle, copy
 from scipy.stats import entropy
 
 init_flag = False
@@ -11,7 +11,7 @@ nn2_params = None
 normalizer = None
 rate_model = None
 bp_model = None
-
+CELLTYPE = None
 
 ##
 # Private NN methods
@@ -221,13 +221,22 @@ def __predict_ins(seq, cutsite, pred_del_df, total_phi_score):
   negfourbase = seq[cutsite - 1]
   negthreebase = seq[cutsite]
 
-  for ins_base in bp_model[negfivebase][negfourbase][negthreebase]:
-    freq = bp_model[negfivebase][negfourbase][negthreebase][ins_base]
-    freq *= rate_1bpins / (1 - rate_1bpins)
-    pred_1bpins_d['Category'].append('ins')
-    pred_1bpins_d['Length'].append(1)
-    pred_1bpins_d['Inserted Bases'].append(ins_base)
-    pred_1bpins_d['Predicted frequency'].append(freq)
+  if CELLTYPE in ['mESC', 'U2OS']:
+    for ins_base in bp_model[negfivebase][negfourbase][negthreebase]:
+      freq = bp_model[negfivebase][negfourbase][negthreebase][ins_base]
+      freq *= rate_1bpins / (1 - rate_1bpins)
+      pred_1bpins_d['Category'].append('ins')
+      pred_1bpins_d['Length'].append(1)
+      pred_1bpins_d['Inserted Bases'].append(ins_base)
+      pred_1bpins_d['Predicted frequency'].append(freq)
+  elif CELLTYPE in ['HEK293', 'HCT116', 'K562']:
+    for ins_base in bp_model[negfivebase]:
+      freq = bp_model[negfivebase][ins_base]
+      freq *= rate_1bpins / (1 - rate_1bpins)
+      pred_1bpins_d['Category'].append('ins')
+      pred_1bpins_d['Length'].append(1)
+      pred_1bpins_d['Inserted Bases'].append(ins_base)
+      pred_1bpins_d['Predicted frequency'].append(freq)
 
   pred_1bpins_df = pd.DataFrame(pred_1bpins_d)
   pred_df = pred_del_df.append(pred_1bpins_df, ignore_index = True)
@@ -458,6 +467,8 @@ def init_model(run_iter = 'aax',
     else:
       return pickle.load(f, encoding = 'latin1')
 
+  global CELLTYPE
+  CELLTYPE = celltype
 
   global nn_params
   global nn2_params
