@@ -24,7 +24,6 @@ Note: Supported cell types are `['mESC', 'U2OS', 'HEK293', 'HCT116', 'K562']`. I
 
 ```python
 pred_df, stats = inDelphi.predict(seq, cutsite)
-inDelphi.add_genotype_column(pred_df, stats)
 ```
 
 `seq` is a string of DNA characters. `cutsite` is an int that specifies the 0-index position of the cutsite, such that `seq[:cutsite]` and `seq[cutsite:]` in Python notation describe the cut products.
