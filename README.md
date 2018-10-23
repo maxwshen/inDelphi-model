@@ -7,7 +7,9 @@ Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete licens
 - scipy 1.1.0
 - numpy 1.15.3
 
-Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 will result in a segfault.
+Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 will result in a segfault.
+
+The online interactive web app version of inDelphi uses scikit-learn v0.18.1 and a different set of trained models. Its predictions may therefore differ from this command-line version of inDelphi.
 
 
 ## Installation

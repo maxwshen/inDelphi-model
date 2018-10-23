@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict
 import os, pickle, copy
+import sklearn
 from scipy.stats import entropy
 
 init_flag = False
@@ -528,7 +529,12 @@ def init_model(run_iter = 'aax',
   print('Initializing model %s/%s, %s...' % (run_iter, param_iter, celltype))
 
   model_dir = os.path.dirname(os.path.realpath(__file__))
-  model_dir += '/model'
+  if sklearn.__version__ == '0.18.1':
+    model_dir += '/model-sklearn-0.18.1'
+  elif sklearn.__version__ == '0.20.0':
+    model_dir += '/model-sklearn-0.20.0'
+  else:
+    assert False, 'scikit-learn %s not supported' % (sklearn.__version__)
 
   import sys
   def version_sensitive_pickle_load(f):
