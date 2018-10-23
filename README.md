@@ -11,9 +11,10 @@ Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 w
 
 
 ## Installation
-Clone this github repository, then set up your environment to import the inDelphi.py script in however is most convenient for you. In python, for instance, you may use:
+Clone this github repository, then set up your environment to import the inDelphi.py script in however is most convenient for you. In python, for instance, you may use the following at the top of your script to import inDelphi.
 
 ```python
+import sys
 sys.path.append('/directory/to/local/indelphi/repo/clone/')
 import inDelphi
 ```
