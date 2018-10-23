@@ -1,7 +1,7 @@
 # inDelphi-model
 Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
 
-### Requirements
+## Requirements
 ---
 - pandas 0.23.4
 - scikit-learn 0.18.1
@@ -11,7 +11,7 @@ Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete licens
 Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 will result in a segfault.
 
 
-### Usage
+## Usage
 ---
 In python2 or python3:
 
@@ -55,8 +55,7 @@ pred_df, stats = inDelphi.predict(seq, cutsite)
 - Cas9 type
 - Celltype
 
-##### Example usage
----
+### Example usage
 ```python
 import inDelphi
 inDelphi.init_model(celltype = 'mESC')
@@ -69,12 +68,11 @@ cutsite = len(left_seq)
 pred_df, stats = inDelphi.predict(seq, cutsite)
 ```
 
-### Additional methods
+## Additional methods
 ---
 Once you have obtained `pred_df, stats`, additional methods are available for your convenience.
 
-##### Obtaining exact genotypes
----
+### Obtaining exact genotypes
 ```python
 pred_df, stats = inDelphi.predict(seq, cutsite)
 pred_df = inDelphi.add_genotype_column(pred_df, stats)
@@ -83,7 +81,7 @@ pred_df = inDelphi.add_genotype_column(pred_df, stats)
 A new column `Genotype` will be created.
 - If MH-less genotypes are represented with `pred_df['Genotype position'] == 'e'`, MH-less genotypes will not have a value for `Genotype` since these rows represent the total predicted frequency for a group of MH-less genotypes.
 
-##### Expanding microhomology-less deletion predictions into genotype resolution
+### Expanding microhomology-less deletion predictions into genotype resolution
 Warning: Microhomology-less deletions are less consistent between experimental replicates than 1-bp insertions and microhomology deletions. inDelphi as presented in our manuscript was tested for performance only on grouped predictions for MH-less genotypes.
 
 ```python
@@ -99,6 +97,6 @@ Microhomology-less deletions will be converted into a different representation:
 
 For details on how predicted frequencies are converted, refer to https://www.crisprindelphi.design/guide#single4.
 
-### Contact
+## Contact
 ---
 maxwshen at mit.edu
