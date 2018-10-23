@@ -2,7 +2,6 @@
 Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
 
 ## Requirements
----
 - pandas 0.23.4
 - scikit-learn 0.18.1
 - scipy 1.1.0
@@ -12,7 +11,6 @@ Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 w
 
 
 ## Usage
----
 In python2 or python3:
 
 ```python
@@ -69,7 +67,6 @@ pred_df, stats = inDelphi.predict(seq, cutsite)
 ```
 
 ## Additional methods
----
 Once you have obtained `pred_df, stats`, additional methods are available for your convenience.
 
 ### Obtaining exact genotypes
@@ -98,5 +95,4 @@ Microhomology-less deletions will be converted into a different representation:
 For details on how predicted frequencies are converted, refer to https://www.crisprindelphi.design/guide#single4.
 
 ## Contact
----
 maxwshen at mit.edu
