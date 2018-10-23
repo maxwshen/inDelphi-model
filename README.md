@@ -1,7 +1,7 @@
 # inDelphi-model
 Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
 
-## Requirements
+## Dependencies
 - pandas 0.23.4
 - scikit-learn 0.18.1
 - scipy 1.1.0
