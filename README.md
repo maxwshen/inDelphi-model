@@ -1,15 +1,13 @@
 # inDelphi-model
-Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
 
 ## Dependencies
+- python 2.7+ or 3.4+
 - pandas 0.23.4
-- scikit-learn 0.18.1
+- scikit-learn 0.18.1 or 0.20.0
 - scipy 1.1.0
 - numpy 1.15.3
 
-Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 will result in a segfault.
-
-The online interactive web app version of inDelphi uses scikit-learn v0.18.1 and a different set of trained models. Its predictions may therefore differ from this command-line version of inDelphi.
+The online interactive web app version of inDelphi uses the scikit-learn v0.18.1 models.
 
 
 ## Installation
@@ -107,3 +105,5 @@ For details on how predicted frequencies are converted, refer to https://www.cri
 
 ## Contact
 maxwshen at mit.edu
+
+Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
