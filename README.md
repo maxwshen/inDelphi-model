@@ -10,6 +10,14 @@ Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete licens
 Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 will result in a segfault.
 
 
+## Installation
+Clone this github repository, then set up your environment to import the inDelphi.py script in however is most convenient for you. In python, for instance, you may use:
+
+```python
+sys.path.append('/directory/to/local/indelphi/repo/clone/')
+import inDelphi
+```
+
 ## Usage
 In python2 or python3:
 
