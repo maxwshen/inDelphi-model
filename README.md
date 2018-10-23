@@ -13,12 +13,14 @@ Note: Attempting to load the sklearn v0.18.1 model pickles with sklearn 0.20.0 w
 
 ### Usage
 ---
+In python2 or python3:
+
 ```python
 import inDelphi
 inDelphi.init_model(celltype = 'mESC')
 ```
 
-Note: Supported cell types are `['mESC', 'U2OS', 'HEK293', 'HCT116', 'K562']`. If your cell type of interest is not included here, we recommend using mESC if your cell type does not have known DNA repair defects and is not a cancer cell type. See [www.crisprindelphi.design/guide] for more details.
+Note: Supported cell types are `['mESC', 'U2OS', 'HEK293', 'HCT116', 'K562']`. If your cell type of interest is not included here, we recommend using mESC if your cell type does not have known DNA repair defects and is not a cancer cell type. See www.crisprindelphi.design/guide for more details.
 
 ```python
 pred_df, stats = inDelphi.predict(seq, cutsite)
@@ -33,7 +35,7 @@ inDelphi.add_genotype_column(pred_df, stats)
 - Microhomology-less deletions are uniquely identified by `row['Category'] == 'del'`, `1 <= row['Length'] <= 60`, and `row['Genotype position'] == 'e'`.
 - The column 'Predicted frequency' sums to 100.0.
 
-`stats` is a dict with the following keys. For further details, refer to [www.crisprindelphi.design/guide#batch4].
+`stats` is a dict with the following keys. For further details, refer to www.crisprindelphi.design/guide#batch4.
 - Phi (Note: natural log of phi refers to microhomology strength)
 - Precision
 - 1-bp ins frequency
@@ -96,7 +98,7 @@ Microhomology-less deletions will be converted into a different representation:
 - Microhomology-less deletions will no longer contain the value 'e' in 'Genotype position'
 - The number of rows in `pred_df` will increase
 
-For details on how predicted frequencies are converted, refer to [https://www.crisprindelphi.design/guide#single4].
+For details on how predicted frequencies are converted, refer to https://www.crisprindelphi.design/guide#single4.
 
 ### Contact
 ---
