@@ -20,7 +20,7 @@ import inDelphi
 ```
 
 ## Usage
-In python2 or python3:
+In python2.7+ or python3.4+:
 
 ```python
 import inDelphi
