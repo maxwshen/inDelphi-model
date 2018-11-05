@@ -231,8 +231,8 @@ def __predict_ins(seq, cutsite, pred_del_df, total_phi_score):
       pred_1bpins_d['Inserted Bases'].append(ins_base)
       pred_1bpins_d['Predicted frequency'].append(freq)
   elif CELLTYPE in ['HEK293', 'HCT116', 'K562']:
-    for ins_base in bp_model[negfivebase]:
-      freq = bp_model[negfivebase][ins_base]
+    for ins_base in bp_model[negfourbase]:
+      freq = bp_model[negfourbase][ins_base]
       freq *= rate_1bpins / (1 - rate_1bpins)
       pred_1bpins_d['Category'].append('ins')
       pred_1bpins_d['Length'].append(1)

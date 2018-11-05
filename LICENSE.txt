@@ -1,7 +1,39 @@
-Copyright 2018. Massachusetts Institute of Technology, The Broad Institute, Harvard University and Brigham and Women's Hospital. Rights Reserved. Massachusetts Institute of Technology, The Broad Institute, Harvard University and Brigham and Woman's Hospital hereby make the following copyrightable material and the use of the InDelphi website available for non-commercial use only, by non-profits and government institutions only.  Non-commercial use, as used herein, excludes providing contract services to third parties whether with or without charge. Downloaders and/or users must credit the authors in publications: Shen, M.W., et al., Nature, 2018. Users can modify the code and must redistribute modifications under the same terms as this license.
+Limited Copyright License for Research Use by Non-Profit and Government Institutions
 
-Neither the names of the copyright holders nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+ 
 
-Disclaimer of Warranties and Limitation of Liability.
+BY DOWNLOADING THE CODE OR USING THE SERVICE AND/OR SOFTWARE APPLICATION ACCOMPANYING THIS LICENSE, YOU ARE CONSENTING TO BE BOUND BY ALL OF THE TERMS OF THIS LICENSE
 
-Unless otherwise separately undertaken by the Licensor, to the extent possible, the Licensor offers the Licensed Material as-is and as-available, and makes no representations or warranties of any kind concerning the Licensed Material, whether express, implied, statutory, or other. This includes, without limitation, warranties of title, merchantability, fitness for a particular purpose, non-infringement, absence of latent or other defects, accuracy, or the presence or absence of errors, whether or not known or discoverable. Where disclaimers of warranties are not allowed in full or in part, this disclaimer may not apply to You. To the extent possible, in no event will the Licensor be liable to You on any legal theory (including, without limitation, negligence) or otherwise for any direct, special, indirect, incidental, consequential, punitive, exemplary, or other losses, costs, expenses, or damages arising out of this Public License or use of the Licensed Material, even if the Licensor has been advised of the possibility of such losses, costs, expenses, or damages. Where a limitation of liability is not allowed in full or in part, this limitation may not apply to You. The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+“Copyright 2018. Massachusetts Institute of Technology, The Broad Institute, Harvard University and Brigham and Women's Hospital. All Rights Reserved.”
+
+ 
+
+The software is being provided as a service for research, educational, instructional and non-commercial purposes only. By generating a user account and/or submitting jobs to InDelphi you agree to the terms and conditions herein.
+
+ 
+
+You are an actively enrolled student, post-doctoral researcher, or faculty member at a degree-granting educational institution or US government research institution; and You will only use the InDelphi Software Application and/or Service for educational, instructional, and/or non-commercial research purposes; 
+
+
+You understand that all results produced using the Code may only be used for non-commercial research and/or academic purposes;
+
+ 
+
+You understand that to obtain any right to use the Code for commercial purposes, or in the context of industrially sponsored research, You must enter into an appropriate, separate and direct license agreement with the Owners.
+
+ 
+
+You will not redistribute unmodified versions of the Code;
+
+ 
+
+You will redistribute modifications, if any, under the same terms as this license and only to non-profits and US government institutions;
+
+ 
+
+You must credit the authors of the Code: David K. Gifford, Jonathan Yee-Ting Hsu and Max Walt Shen and cite Predictable and precise template-free editing of pathogenic mutations by CRISPR-Cas9 nuclease", Nature, 2018, in press; and
+
+ 
+
+You understand that neither the names of the Owners nor the names of the authors may be used to endorse or promote products derived from this software without specific prior written permission.
