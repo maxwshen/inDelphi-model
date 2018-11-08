@@ -106,4 +106,11 @@ For details on how predicted frequencies are converted, refer to https://www.cri
 ## Contact
 maxwshen at mit.edu
 
-Copyright 2018 MIT, All Rights Reserved. See LICENSE.txt for the complete license.
+### License
+Limited Copyright License for Research Use by Non-Profit and Government Institutions
+
+BY DOWNLOADING THE CODE OR USING THE SERVICE AND/OR SOFTWARE APPLICATION ACCOMPANYING THIS LICENSE, YOU ARE CONSENTING TO BE BOUND BY ALL OF THE TERMS OF THIS LICENSE
+
+“Copyright 2018. Massachusetts Institute of Technology, The Broad Institute, Harvard University and Brigham and Women's Hospital. All Rights Reserved.”
+
+The software is being provided as a service for research, educational, instructional and non-commercial purposes only. By generating a user account and/or submitting jobs to InDelphi you agree to the terms and conditions herein. You are an actively enrolled student, post-doctoral researcher, or faculty member at a degree-granting educational institution or US government research institution; and You will only use the InDelphi Software Application and/or Service for educational, instructional, and/or non-commercial research purposes; You understand that all results produced using the Code may only be used for non-commercial research and/or academic purposes; You understand that to obtain any right to use the Code for commercial purposes, or in the context of industrially sponsored research, You must enter into an appropriate, separate and direct license agreement with the Owners. You will not redistribute unmodified versions of the Code; You will redistribute modifications, if any, under the same terms as this license and only to non-profits and US government institutions; You must credit the authors of the Code: David K. Gifford, Jonathan Yee-Ting Hsu and Max Walt Shen and cite Predictable and precise template-free editing of pathogenic mutations by CRISPR-Cas9 nuclease", Nature, 2018,  doi:10.1038/s41586-018-0686-x; and You understand that neither the names of the Owners nor the names of the authors may be used to endorse or promote products derived from this software without specific prior written permission.
